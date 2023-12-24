@@ -6,7 +6,7 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
         beforeEach(() => {
             options = {
-                numberOfInputs: 0,
+                numberOfInputs: 1,
                 numberOfOutputs: 1,
                 outputChannelCount: [2]
             };
@@ -38,13 +38,13 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
             });
         });
 
-        describe('with a numberOfInputs other than 0', () => {
+        describe('with a numberOfInputs other than 1', () => {
             beforeEach(() => {
-                options.numberOfInputs = 1;
+                options.numberOfInputs = 0;
             });
 
             it('should throw an error', () => {
-                expect(() => new TimedAudioBufferSourceNodeAudioWorkletProcessor(options)).to.throw(Error, 'The numberOfInputs must be 0.');
+                expect(() => new TimedAudioBufferSourceNodeAudioWorkletProcessor(options)).to.throw(Error, 'The numberOfInputs must be 1.');
             });
         });
 
@@ -96,7 +96,7 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
             beforeEach(() => {
                 outputChannelData = new Float32Array(128);
                 timedAudioBufferSourceNodeAudioWorkletProcessor = new TimedAudioBufferSourceNodeAudioWorkletProcessor({
-                    numberOfInputs: 0,
+                    numberOfInputs: 1,
                     numberOfOutputs: 1,
                     outputChannelCount: [1]
                 });
@@ -168,7 +168,7 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                 beforeEach(() => {
                     timedAudioBufferSourceNodeAudioWorkletProcessor = new TimedAudioBufferSourceNodeAudioWorkletProcessor({
-                        numberOfInputs: 0,
+                        numberOfInputs: 1,
                         numberOfOutputs: 1,
                         outputChannelCount: [1],
                         processorOptions: {
@@ -230,205 +230,225 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
             });
 
             describe('with a position', () => {
-                let timedAudioBufferSourceNodeAudioWorkletProcessor;
+                for (const [description, input, processorOptions] of [
+                    ['set in the constructor', [], { position: 128 }],
+                    ['given as input', [new Float32Array(Array.from({ length: 128 }, (_, index) => (index === 0 ? 128 : 0)))], {}]
+                ]) {
+                    describe(`with a value ${description}`, () => {
+                        let timedAudioBufferSourceNodeAudioWorkletProcessor;
 
-                beforeEach(() => {
-                    timedAudioBufferSourceNodeAudioWorkletProcessor = new TimedAudioBufferSourceNodeAudioWorkletProcessor({
-                        numberOfInputs: 0,
-                        numberOfOutputs: 1,
-                        outputChannelCount: [1],
-                        processorOptions: {
-                            buffer: [bufferChannelData],
-                            position: 128
-                        }
+                        beforeEach(() => {
+                            timedAudioBufferSourceNodeAudioWorkletProcessor = new TimedAudioBufferSourceNodeAudioWorkletProcessor({
+                                numberOfInputs: 1,
+                                numberOfOutputs: 1,
+                                outputChannelCount: [1],
+                                processorOptions: {
+                                    buffer: [bufferChannelData],
+                                    ...processorOptions
+                                }
+                            });
+                        });
+
+                        describe('with a currentFrame of 0', () => {
+                            beforeEach(() => {
+                                // eslint-disable-next-line no-undef
+                                global.currentFrame = 0;
+                            });
+
+                            it('should return true', () => {
+                                expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]])).to.be.true;
+                            });
+
+                            it('should fill the output with samples from the buffer', () => {
+                                timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]]);
+
+                                expect(outputChannelData).to.deep.equal(bufferChannelData.slice(128, 256));
+                            });
+                        });
+
+                        describe('with a currentFrame of 128', () => {
+                            beforeEach(() => {
+                                // eslint-disable-next-line no-undef
+                                global.currentFrame = 128;
+                            });
+
+                            it('should return true', () => {
+                                expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]])).to.be.true;
+                            });
+
+                            it('should fill the output with samples from the buffer', () => {
+                                timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]]);
+
+                                expect(outputChannelData).to.deep.equal(bufferChannelData.slice(256, 384));
+                            });
+                        });
+
+                        describe('with a currentFrame of 256', () => {
+                            beforeEach(() => {
+                                // eslint-disable-next-line no-undef
+                                global.currentFrame = 256;
+                            });
+
+                            it('should return true', () => {
+                                expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]])).to.be.true;
+                            });
+
+                            it('should not change the output', () => {
+                                timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]]);
+
+                                expect(outputChannelData).to.deep.equal(new Float32Array(128));
+                            });
+                        });
                     });
-                });
-
-                describe('with a currentFrame of 0', () => {
-                    beforeEach(() => {
-                        // eslint-disable-next-line no-undef
-                        global.currentFrame = 0;
-                    });
-
-                    it('should return true', () => {
-                        expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]])).to.be.true;
-                    });
-
-                    it('should fill the output with samples from the buffer', () => {
-                        timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]]);
-
-                        expect(outputChannelData).to.deep.equal(bufferChannelData.slice(128, 256));
-                    });
-                });
-
-                describe('with a currentFrame of 128', () => {
-                    beforeEach(() => {
-                        // eslint-disable-next-line no-undef
-                        global.currentFrame = 128;
-                    });
-
-                    it('should return true', () => {
-                        expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]])).to.be.true;
-                    });
-
-                    it('should fill the output with samples from the buffer', () => {
-                        timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]]);
-
-                        expect(outputChannelData).to.deep.equal(bufferChannelData.slice(256, 384));
-                    });
-                });
-
-                describe('with a currentFrame of 256', () => {
-                    beforeEach(() => {
-                        // eslint-disable-next-line no-undef
-                        global.currentFrame = 256;
-                    });
-
-                    it('should return true', () => {
-                        expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]])).to.be.true;
-                    });
-
-                    it('should not change the output', () => {
-                        timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]]);
-
-                        expect(outputChannelData).to.deep.equal(new Float32Array(128));
-                    });
-                });
+                }
             });
 
             describe('with a timestamp', () => {
-                let timedAudioBufferSourceNodeAudioWorkletProcessor;
+                for (const [description, input, processorOptions] of [
+                    ['set in the constructor', [], { timestamp: 128 }],
+                    ['given as input', [new Float32Array(Array.from({ length: 128 }, (_, index) => (index === 1 ? 128 : 0)))], {}]
+                ]) {
+                    describe(`with a value ${description}`, () => {
+                        let timedAudioBufferSourceNodeAudioWorkletProcessor;
 
-                beforeEach(() => {
-                    timedAudioBufferSourceNodeAudioWorkletProcessor = new TimedAudioBufferSourceNodeAudioWorkletProcessor({
-                        numberOfInputs: 0,
-                        numberOfOutputs: 1,
-                        outputChannelCount: [1],
-                        processorOptions: {
-                            buffer: [bufferChannelData],
-                            timestamp: 128
-                        }
+                        beforeEach(() => {
+                            timedAudioBufferSourceNodeAudioWorkletProcessor = new TimedAudioBufferSourceNodeAudioWorkletProcessor({
+                                numberOfInputs: 1,
+                                numberOfOutputs: 1,
+                                outputChannelCount: [1],
+                                processorOptions: {
+                                    buffer: [bufferChannelData],
+                                    ...processorOptions
+                                }
+                            });
+                        });
+
+                        describe('with a currentFrame of 0', () => {
+                            beforeEach(() => {
+                                // eslint-disable-next-line no-undef
+                                global.currentFrame = 0;
+                            });
+
+                            it('should return true', () => {
+                                expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]])).to.be.true;
+                            });
+
+                            it('should not change the output', () => {
+                                timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]]);
+
+                                expect(outputChannelData).to.deep.equal(new Float32Array(128));
+                            });
+                        });
+
+                        describe('with a currentFrame of 128', () => {
+                            beforeEach(() => {
+                                // eslint-disable-next-line no-undef
+                                global.currentFrame = 128;
+                            });
+
+                            it('should return true', () => {
+                                expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]])).to.be.true;
+                            });
+
+                            it('should fill the output with samples from the buffer', () => {
+                                timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]]);
+
+                                expect(outputChannelData).to.deep.equal(bufferChannelData.slice(0, 128));
+                            });
+                        });
+
+                        describe('with a currentFrame of 256', () => {
+                            beforeEach(() => {
+                                // eslint-disable-next-line no-undef
+                                global.currentFrame = 256;
+                            });
+
+                            it('should return true', () => {
+                                expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]])).to.be.true;
+                            });
+
+                            it('should fill the output with samples from the buffer', () => {
+                                timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]]);
+
+                                expect(outputChannelData).to.deep.equal(bufferChannelData.slice(128, 256));
+                            });
+                        });
                     });
-                });
-
-                describe('with a currentFrame of 0', () => {
-                    beforeEach(() => {
-                        // eslint-disable-next-line no-undef
-                        global.currentFrame = 0;
-                    });
-
-                    it('should return true', () => {
-                        expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]])).to.be.true;
-                    });
-
-                    it('should not change the output', () => {
-                        timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]]);
-
-                        expect(outputChannelData).to.deep.equal(new Float32Array(128));
-                    });
-                });
-
-                describe('with a currentFrame of 128', () => {
-                    beforeEach(() => {
-                        // eslint-disable-next-line no-undef
-                        global.currentFrame = 128;
-                    });
-
-                    it('should return true', () => {
-                        expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]])).to.be.true;
-                    });
-
-                    it('should fill the output with samples from the buffer', () => {
-                        timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]]);
-
-                        expect(outputChannelData).to.deep.equal(bufferChannelData.slice(0, 128));
-                    });
-                });
-
-                describe('with a currentFrame of 256', () => {
-                    beforeEach(() => {
-                        // eslint-disable-next-line no-undef
-                        global.currentFrame = 256;
-                    });
-
-                    it('should return true', () => {
-                        expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]])).to.be.true;
-                    });
-
-                    it('should fill the output with samples from the buffer', () => {
-                        timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]]);
-
-                        expect(outputChannelData).to.deep.equal(bufferChannelData.slice(128, 256));
-                    });
-                });
+                }
             });
 
             describe('with a position and timestamp', () => {
-                let timedAudioBufferSourceNodeAudioWorkletProcessor;
+                for (const [description, input, processorOptions] of [
+                    ['set in the constructor', [], { position: 128, timestamp: 128 }],
+                    ['given as input', [new Float32Array(Array.from({ length: 128 }, (_, index) => (index < 2 ? 128 : 0)))], {}]
+                ]) {
+                    describe(`with a value ${description}`, () => {
+                        let timedAudioBufferSourceNodeAudioWorkletProcessor;
 
-                beforeEach(() => {
-                    timedAudioBufferSourceNodeAudioWorkletProcessor = new TimedAudioBufferSourceNodeAudioWorkletProcessor({
-                        numberOfInputs: 0,
-                        numberOfOutputs: 1,
-                        outputChannelCount: [1],
-                        processorOptions: {
-                            buffer: [bufferChannelData],
-                            position: 128,
-                            timestamp: 128
-                        }
+                        beforeEach(() => {
+                            timedAudioBufferSourceNodeAudioWorkletProcessor = new TimedAudioBufferSourceNodeAudioWorkletProcessor({
+                                numberOfInputs: 1,
+                                numberOfOutputs: 1,
+                                outputChannelCount: [1],
+                                processorOptions: {
+                                    buffer: [bufferChannelData],
+                                    ...processorOptions
+                                }
+                            });
+                        });
+
+                        describe('with a currentFrame of 0', () => {
+                            beforeEach(() => {
+                                // eslint-disable-next-line no-undef
+                                global.currentFrame = 0;
+                            });
+
+                            it('should return true', () => {
+                                expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]])).to.be.true;
+                            });
+
+                            it('should fill the output with samples from the buffer', () => {
+                                timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]]);
+
+                                expect(outputChannelData).to.deep.equal(bufferChannelData.slice(0, 128));
+                            });
+                        });
+
+                        describe('with a currentFrame of 128', () => {
+                            beforeEach(() => {
+                                // eslint-disable-next-line no-undef
+                                global.currentFrame = 128;
+                            });
+
+                            it('should return true', () => {
+                                expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]])).to.be.true;
+                            });
+
+                            it('should fill the output with samples from the buffer', () => {
+                                timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]]);
+
+                                expect(outputChannelData).to.deep.equal(bufferChannelData.slice(128, 256));
+                            });
+                        });
+
+                        describe('with a currentFrame of 256', () => {
+                            beforeEach(() => {
+                                // eslint-disable-next-line no-undef
+                                global.currentFrame = 256;
+                            });
+
+                            it('should return true', () => {
+                                expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]])).to.be.true;
+                            });
+
+                            it('should fill the output with samples from the buffer', () => {
+                                timedAudioBufferSourceNodeAudioWorkletProcessor.process([input], [[outputChannelData]]);
+
+                                expect(outputChannelData).to.deep.equal(bufferChannelData.slice(256, 384));
+                            });
+                        });
                     });
-                });
-
-                describe('with a currentFrame of 0', () => {
-                    beforeEach(() => {
-                        // eslint-disable-next-line no-undef
-                        global.currentFrame = 0;
-                    });
-
-                    it('should return true', () => {
-                        expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]])).to.be.true;
-                    });
-
-                    it('should fill the output with samples from the buffer', () => {
-                        timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]]);
-
-                        expect(outputChannelData).to.deep.equal(bufferChannelData.slice(0, 128));
-                    });
-                });
-
-                describe('with a currentFrame of 128', () => {
-                    beforeEach(() => {
-                        // eslint-disable-next-line no-undef
-                        global.currentFrame = 128;
-                    });
-
-                    it('should return true', () => {
-                        expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]])).to.be.true;
-                    });
-
-                    it('should fill the output with samples from the buffer', () => {
-                        timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]]);
-
-                        expect(outputChannelData).to.deep.equal(bufferChannelData.slice(128, 256));
-                    });
-                });
-
-                describe('with a currentFrame of 256', () => {
-                    beforeEach(() => {
-                        // eslint-disable-next-line no-undef
-                        global.currentFrame = 256;
-                    });
-
-                    it('should return true', () => {
-                        expect(timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]])).to.be.true;
-                    });
-
-                    it('should fill the output with samples from the buffer', () => {
-                        timedAudioBufferSourceNodeAudioWorkletProcessor.process([[]], [[outputChannelData]]);
-
-                        expect(outputChannelData).to.deep.equal(bufferChannelData.slice(256, 384));
-                    });
-                });
+                }
             });
         });
     });

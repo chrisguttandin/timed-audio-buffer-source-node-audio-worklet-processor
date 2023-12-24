@@ -14,7 +14,7 @@ describe('module', () => {
 
         beforeEach(() => {
             audioWorkletNode = new AudioWorkletNode(offlineAudioContext, 'timed-audio-buffer-source-node-audio-worklet-processor', {
-                numberOfInputs: 0,
+                numberOfInputs: 1,
                 numberOfOutputs: 1,
                 outputChannelCount: [1]
             });
@@ -47,7 +47,7 @@ describe('module', () => {
 
                 beforeEach(() => {
                     audioWorkletNode = new AudioWorkletNode(offlineAudioContext, 'timed-audio-buffer-source-node-audio-worklet-processor', {
-                        numberOfInputs: 0,
+                        numberOfInputs: 1,
                         numberOfOutputs: 1,
                         outputChannelCount: [1],
                         processorOptions: { buffer }
@@ -75,7 +75,7 @@ describe('module', () => {
 
                 beforeEach(() => {
                     audioWorkletNode = new AudioWorkletNode(offlineAudioContext, 'timed-audio-buffer-source-node-audio-worklet-processor', {
-                        numberOfInputs: 0,
+                        numberOfInputs: 1,
                         numberOfOutputs: 1,
                         outputChannelCount: [1],
                         processorOptions: { buffer, timestamp: 64 }
@@ -105,7 +105,7 @@ describe('module', () => {
 
                 beforeEach(() => {
                     audioWorkletNode = new AudioWorkletNode(offlineAudioContext, 'timed-audio-buffer-source-node-audio-worklet-processor', {
-                        numberOfInputs: 0,
+                        numberOfInputs: 1,
                         numberOfOutputs: 1,
                         outputChannelCount: [1],
                         processorOptions: { buffer, position: 64 }
@@ -133,7 +133,7 @@ describe('module', () => {
 
                 beforeEach(() => {
                     audioWorkletNode = new AudioWorkletNode(offlineAudioContext, 'timed-audio-buffer-source-node-audio-worklet-processor', {
-                        numberOfInputs: 0,
+                        numberOfInputs: 1,
                         numberOfOutputs: 1,
                         outputChannelCount: [1],
                         processorOptions: { buffer, position: 64, timestamp: 64 }
@@ -174,7 +174,7 @@ describe('module', () => {
 
                 beforeEach(() => {
                     audioWorkletNode = new AudioWorkletNode(offlineAudioContext, 'timed-audio-buffer-source-node-audio-worklet-processor', {
-                        numberOfInputs: 0,
+                        numberOfInputs: 1,
                         numberOfOutputs: 1,
                         outputChannelCount: [2],
                         processorOptions: { buffer }
@@ -200,7 +200,7 @@ describe('module', () => {
 
                 beforeEach(() => {
                     audioWorkletNode = new AudioWorkletNode(offlineAudioContext, 'timed-audio-buffer-source-node-audio-worklet-processor', {
-                        numberOfInputs: 0,
+                        numberOfInputs: 1,
                         numberOfOutputs: 1,
                         outputChannelCount: [2],
                         processorOptions: { buffer, timestamp: 64 }
@@ -230,7 +230,7 @@ describe('module', () => {
 
                 beforeEach(() => {
                     audioWorkletNode = new AudioWorkletNode(offlineAudioContext, 'timed-audio-buffer-source-node-audio-worklet-processor', {
-                        numberOfInputs: 0,
+                        numberOfInputs: 1,
                         numberOfOutputs: 1,
                         outputChannelCount: [2],
                         processorOptions: { buffer, position: 64 }
@@ -258,7 +258,7 @@ describe('module', () => {
 
                 beforeEach(() => {
                     audioWorkletNode = new AudioWorkletNode(offlineAudioContext, 'timed-audio-buffer-source-node-audio-worklet-processor', {
-                        numberOfInputs: 0,
+                        numberOfInputs: 1,
                         numberOfOutputs: 1,
                         outputChannelCount: [2],
                         processorOptions: { buffer, position: 64, timestamp: 64 }

@@ -25,8 +25,8 @@ export class TimedAudioBufferSourceNodeAudioWorkletProcessor extends AudioWorkle
             throw new Error('The buffer needs to be either null or an array with where each element is a Float32Array.');
         }
 
-        if (numberOfInputs !== 0) {
-            throw new Error('The numberOfInputs must be 0.');
+        if (numberOfInputs !== 1) {
+            throw new Error('The numberOfInputs must be 1.');
         }
 
         if (numberOfOutputs !== 1) {
@@ -64,19 +64,28 @@ export class TimedAudioBufferSourceNodeAudioWorkletProcessor extends AudioWorkle
         this._timestamp = timestamp;
     }
 
-    public process(_: Float32Array[][], [output]: Float32Array[][]): boolean {
+    public process([input]: Float32Array[][], [output]: Float32Array[][]): boolean {
+        if (input.length > 0) {
+            const [inputChannelData] = input;
+
+            if (inputChannelData.length > 1) {
+                this._position = Math.round(inputChannelData[0]);
+                this._timestamp = Math.round(inputChannelData[1]);
+            }
+        }
+
         if (this._buffer !== null) {
             const numberOfChannels = this._buffer.length;
 
             for (let channel = 0; channel < numberOfChannels; channel += 1) {
-                const inputChannelData = this._buffer[channel];
+                const bufferChannelData = this._buffer[channel];
                 const outputChannelData = output[channel];
 
                 for (let i = 0; i < 128; i += 1) {
                     const index = this._position + currentFrame - this._timestamp + i;
 
-                    if (index >= 0 && index < inputChannelData.length) {
-                        outputChannelData[i] = inputChannelData[index];
+                    if (index >= 0 && index < bufferChannelData.length) {
+                        outputChannelData[i] = bufferChannelData[index];
                     }
                 }
             }
