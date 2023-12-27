@@ -99,7 +99,7 @@ describe('module', () => {
             });
         });
 
-        describe('without a position of 64', () => {
+        describe('with a position of 64', () => {
             describe('without a timestamp', () => {
                 let audioWorkletNode;
 
@@ -224,7 +224,7 @@ describe('module', () => {
             });
         });
 
-        describe('without a position of 64', () => {
+        describe('with a position of 64', () => {
             describe('without a timestamp', () => {
                 let audioWorkletNode;
 
