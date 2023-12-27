@@ -9,6 +9,8 @@ export class TimedAudioBufferSourceNodeAudioWorkletProcessor extends AudioWorkle
 
     private _timestamp: number;
 
+    private _velocity: number;
+
     constructor({ numberOfInputs, numberOfOutputs, outputChannelCount, processorOptions }: AudioWorkletNodeOptions) {
         const buffer =
             typeof processorOptions === 'object' && processorOptions !== null && 'buffer' in processorOptions
@@ -57,20 +59,31 @@ export class TimedAudioBufferSourceNodeAudioWorkletProcessor extends AudioWorkle
             throw new Error('The timestamp needs to be of type "number".');
         }
 
+        const velocity =
+            typeof processorOptions === 'object' && processorOptions !== null && 'velocity' in processorOptions
+                ? processorOptions.velocity
+                : 0;
+
+        if (![0, 1].includes(velocity)) {
+            throw new Error('The velocity needs to be either 0 or 1.');
+        }
+
         super();
 
         this._buffer = buffer;
         this._position = position;
         this._timestamp = timestamp;
+        this._velocity = velocity;
     }
 
     public process([input]: Float32Array[][], [output]: Float32Array[][]): boolean {
-        if (input.length > 0) {
+        if (input?.length > 0) {
             const [inputChannelData] = input;
 
             if (inputChannelData.length > 1) {
                 this._position = Math.round(inputChannelData[0]);
                 this._timestamp = Math.round(inputChannelData[1]);
+                this._velocity = Math.round(inputChannelData[2]);
             }
         }
 
@@ -82,7 +95,7 @@ export class TimedAudioBufferSourceNodeAudioWorkletProcessor extends AudioWorkle
                 const outputChannelData = output[channel];
 
                 for (let i = 0; i < 128; i += 1) {
-                    const index = this._position + currentFrame - this._timestamp + i;
+                    const index = this._position + (currentFrame - this._timestamp + i) * this._velocity;
 
                     if (index >= 0 && index < bufferChannelData.length) {
                         outputChannelData[i] = bufferChannelData[index];
