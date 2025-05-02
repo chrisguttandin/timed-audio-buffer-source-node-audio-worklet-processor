@@ -64,7 +64,7 @@ export class TimedAudioBufferSourceNodeAudioWorkletProcessor extends AudioWorkle
                 ? processorOptions.velocity
                 : 0;
 
-        if (![0, 1].includes(velocity)) {
+        if (typeof velocity !== 'number' || ![0, 1].includes(velocity)) {
             throw new Error('The velocity needs to be either 0 or 1.');
         }
 
