@@ -121,7 +121,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
             describe('with a currentFrame of 0', () => {
                 beforeEach(() => {
-                    // eslint-disable-next-line no-undef
                     globalThis.currentFrame = 0;
                 });
 
@@ -138,7 +137,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
             describe('with a currentFrame of 128', () => {
                 beforeEach(() => {
-                    // eslint-disable-next-line no-undef
                     globalThis.currentFrame = 128;
                 });
 
@@ -155,7 +153,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
             describe('with a currentFrame of 256', () => {
                 beforeEach(() => {
-                    // eslint-disable-next-line no-undef
                     globalThis.currentFrame = 256;
                 });
 
@@ -196,7 +193,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                 describe('with a currentFrame of 0', () => {
                     beforeEach(() => {
-                        // eslint-disable-next-line no-undef
                         globalThis.currentFrame = 0;
                     });
 
@@ -213,7 +209,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                 describe('with a currentFrame of 128', () => {
                     beforeEach(() => {
-                        // eslint-disable-next-line no-undef
                         globalThis.currentFrame = 128;
                     });
 
@@ -230,7 +225,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                 describe('with a currentFrame of 256', () => {
                     beforeEach(() => {
-                        // eslint-disable-next-line no-undef
                         globalThis.currentFrame = 256;
                     });
 
@@ -268,7 +262,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 0', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 0;
                             });
 
@@ -285,7 +278,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 128', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 128;
                             });
 
@@ -302,7 +294,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 256', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 256;
                             });
 
@@ -342,7 +333,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 0', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 0;
                             });
 
@@ -359,7 +349,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 128', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 128;
                             });
 
@@ -376,7 +365,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 256', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 256;
                             });
 
@@ -416,7 +404,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 0', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 0;
                             });
 
@@ -433,7 +420,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 128', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 128;
                             });
 
@@ -450,7 +436,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 256', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 256;
                             });
 
@@ -494,7 +479,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 0', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 0;
                             });
 
@@ -511,7 +495,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 128', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 128;
                             });
 
@@ -528,7 +511,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 256', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 256;
                             });
 
@@ -568,7 +550,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 0', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 0;
                             });
 
@@ -585,7 +566,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 128', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 128;
                             });
 
@@ -602,7 +582,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 256', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 256;
                             });
 
@@ -646,7 +625,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 0', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 0;
                             });
 
@@ -663,7 +641,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 128', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 128;
                             });
 
@@ -680,7 +657,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 256', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 256;
                             });
 
@@ -724,7 +700,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 0', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 0;
                             });
 
@@ -741,7 +716,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 128', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 128;
                             });
 
@@ -758,7 +732,6 @@ describe('TimedAudioBufferSourceNodeAudioWorkletProcessor', () => {
 
                         describe('with a currentFrame of 256', () => {
                             beforeEach(() => {
-                                // eslint-disable-next-line no-undef
                                 globalThis.currentFrame = 256;
                             });
 
